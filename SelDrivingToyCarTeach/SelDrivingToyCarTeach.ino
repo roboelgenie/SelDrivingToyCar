@@ -78,15 +78,18 @@ void loop() {
     // }
 
     // Print the current state of the arrow keys
-    if(arraysNotEqual(arrowState, arrowStateChange, 4)){
-      Serial.print("Arrow State: ");
+    //if(arraysNotEqual(arrowState, arrowStateChange, 4)){
+      //Serial.print("Arrow State: ");
       for (int i = 0; i < 4; i++) {
-        Serial.print(arrowState[i]);
-        Serial.print(" ");
+        if(i > 0){
+        Serial.print(",");
+        }
+        Serial.print(arrowState[i]);        
       }
+      
     Serial.println();
-    copyArray(arrowState, arrowStateChange, 4);      
-    }
+    //copyArray(arrowState, arrowStateChange, 4);      
+    //}
     // Clear arrowState
     // for (int i = 0; i < 4; i++) {
     //   arrowState[i] = 0;
