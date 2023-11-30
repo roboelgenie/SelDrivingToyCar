@@ -14,7 +14,21 @@ if not cap.isOpened():
     exit()
 
 #Open arduino comunication
-arduino = serial.Serial(port='COM4',   baudrate=115200, timeout=.1)
+arduino = serial.Serial(port='COM4', baudrate=9600, timeout=.1)
+
+def ardRead():
+    try:
+        # Read a line from the serial port
+        line = arduino.readline().decode('utf-8').strip()
+
+        # Print the received data
+        print("Received:", line)
+        return line
+
+    except KeyboardInterrupt:
+        # Close the serial port when the program is interrupted (Ctrl+C)
+        arduino.close()
+        print("Serial port closed.")
 
 # Create a directory to store the captured frames
 output_directory = "captured_frames"
@@ -24,7 +38,7 @@ csv_filename = "timestamps.csv"
 csv_path = os.path.join(output_directory, csv_filename)
 
 with open(csv_path, mode='w', newline='') as csv_file:
-    csv_writer = csv.writer(csv_file)
+    csv_writer = csv.writer(csv_file, escapechar=' ', quoting=csv.QUOTE_NONE)
     # csv_writer.writerow(["Timestamp"])
 
     while True:
@@ -46,7 +60,9 @@ with open(csv_path, mode='w', newline='') as csv_file:
         # Display the frame
         cv2.imshow("Frame", frame)
 
-        csv_writer.writerow([timestamp])
+        steering = ardRead()
+
+        csv_writer.writerow([timestamp] + [steering])
 
         # Break the loop if 'q' key is pressed
         if cv2.waitKey(1) & 0xFF == ord('q'):
