@@ -12,6 +12,18 @@ cap = cv2.VideoCapture(1)
 if not cap.isOpened():
     print("Error: Could not open camera.")
     exit()
+#!!ONLY for camera test. Comoent for training!!
+# while True:
+#     ret, frame = cap.read()
+#     cv2.imshow("Frame", frame)
+#     # Check if the frame was read successfully
+#     if not ret:
+#         print("Error: Could not read frame.")
+#         break
+# #Break the loop if 'q' key is pressed
+#     if cv2.waitKey(1) & 0xFF == ord('q'):
+#         break
+#!!ONLY for camera test. Comoent for training!!
 
 #Open arduino comunication
 arduino = serial.Serial(port='COM4', baudrate=9600, timeout=.1)
@@ -34,7 +46,7 @@ def ardRead():
 output_directory = "captured_frames"
 os.makedirs(output_directory, exist_ok=True)
 
-csv_filename = "timestamps.csv"
+csv_filename = "timestamps_raw.csv"
 csv_path = os.path.join(output_directory, csv_filename)
 
 with open(csv_path, mode='w', newline='') as csv_file:
@@ -62,7 +74,7 @@ with open(csv_path, mode='w', newline='') as csv_file:
 
         steering = ardRead()
 
-        csv_writer.writerow([timestamp] + [steering])
+        csv_writer.writerow([timestamp + 'jpg'] + [steering])
 
         # Break the loop if 'q' key is pressed
         if cv2.waitKey(1) & 0xFF == ord('q'):
