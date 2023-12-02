@@ -1,8 +1,9 @@
 import os
 import csv
 
-input_csv_path = 'timestamps_raw.csv'
-output_csv_path = 'timestamps.csv'
+csvPath ='captured_frames'
+input_csv_path = csvPath + '/timestamps_raw.csv'
+output_csv_path = csvPath + '/timestamps.csv'
 
 with open(input_csv_path, 'r', newline='') as input_file, open(output_csv_path, 'w', newline='') as output_file:
     csv_reader = csv.reader(input_file)
@@ -15,7 +16,7 @@ with open(input_csv_path, 'r', newline='') as input_file, open(output_csv_path, 
         else:
             if row and row[0]:
                 first_row = row[:0]
-                file_to_delete = os.path.join('captured_frames', row[0])
+                file_to_delete = os.path.join(csvPath, row[0])
                 if os.path.exists(file_to_delete):
                     os.remove(file_to_delete)
                 else:
